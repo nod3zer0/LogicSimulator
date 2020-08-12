@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="LogicSimulator.LightBulb"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogicSimulator"
+             mc:Ignorable="d" Height="101.2" Width="119.2">
+    <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseLeftButtonUp="Grid_MouseLeftButtonUp" MouseMove="Grid_MouseMove">
+        <Ellipse x:Name="Bulb" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="100" Margin="19,1,0,-0.2"/>
+        <Button x:Name="ConnectorButton" Content="Button" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" Width="9" Height="10" Click="Button_Click"/>
+
+    </Grid>
+</UserControl>

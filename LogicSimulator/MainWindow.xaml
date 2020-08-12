@@ -1,0 +1,36 @@
+﻿<Window x:Class="LogicSimulator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LogicSimulator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="693*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="0,0,-0.4,0" Grid.Column="1">
+            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+                <Canvas x:FieldModifier="public" x:Name="canvas" Margin="0,0,0,0" MouseMove="canvas_MouseMove"  ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible"  ScrollViewer.VerticalScrollBarVisibility="Visible"  Background="Gray" HorizontalAlignment="Left" Height="1450" VerticalAlignment="Top" Width="2047" PreviewMouseLeftButtonDown="Canvas_MouseLeftButtonDown">
+                    <Button Content="Step" Canvas.Left="19" Canvas.Top="222" Width="75" Click="Button_Click"/>
+                    <Button Content="Reset" Canvas.Left="39" Canvas.Top="44" Width="75" Click="Button_Click_1"/>
+                </Canvas>
+            </ScrollViewer>
+        </Grid>
+        <Menu Width="100" RenderTransformOrigin="1.18,1.682"  HorizontalAlignment="Right" Margin="0,0,0.283,0">
+            <RadioButton x:Name="ButtonRbutton" Content="Button" Width="75"/>
+            <RadioButton x:Name="LightBulbButton" Content="Light bulb" Width="75"/>
+            <RadioButton x:Name="LineButton" Content="Line" Width="75"/>
+            <RadioButton x:Name="NOTRButton" Content="NOT" Width="75"/>
+            <RadioButton x:Name="ANDRButton"  Content="AND" Width="75"/>
+            <RadioButton Content="Button" Width="75"/>
+
+        </Menu>
+
+    </Grid>
+</Window>
