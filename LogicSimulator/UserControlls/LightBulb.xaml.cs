@@ -22,8 +22,8 @@ namespace LogicSimulator
     {
         public int offsetX { get; }
         public  int offsetY { get; }
-    
-        
+
+        public ReferenceablePoint linePoint { get; set; }
         public event EventHandler ConectorClicked;
         public Connection connection { get; set; }
         public bool power { get; set; }

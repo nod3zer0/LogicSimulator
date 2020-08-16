@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogicSimulator"
              mc:Ignorable="d" Height="62.721" Width="136.405">
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Image x:Name="image" Source="C:\Users\game1\source\repos\LogicSimulator\LogicSimulator\AND.svg.png" HorizontalAlignment="Left" Height="65" VerticalAlignment="Top" Width="123" Margin="8,0,0,-2.6"/>
-        <Button Content="" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="16" Click="Input_Button_1" Height="16"/>
-        <Button Content="" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Width="16" Click="Input_button_2" Height="12"/>
-        <Button Content="" HorizontalAlignment="Left" Margin="118,21,0,0" VerticalAlignment="Top" Width="13" Click="Output_Button"/>
+        <Button x:Name="Input1CB" Content="" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="16" Click="Input_Button_1" Height="16"/>
+        <Button x:Name="Input2CB" Content="" HorizontalAlignment="Left" Margin="8,37,0,0" VerticalAlignment="Top" Width="16" Click="Input_button_2" Height="12"/>
+        <Button x:Name="OutputCB" Content="" HorizontalAlignment="Left" Margin="118,21,0,0" VerticalAlignment="Top" Width="13" Click="Output_Button"/>
 
     </Grid>
 </UserControl>

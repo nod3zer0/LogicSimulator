@@ -28,6 +28,7 @@ namespace LogicSimulator
         public Line line2 { get; set; }
         public List<Part> Outputs { get; set; }
         public List<Part> Inputs { get; set; }
+        public ReferenceablePoint linePoint { get; set; }
 
         public Connector()
         {

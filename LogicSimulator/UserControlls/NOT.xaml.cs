@@ -22,6 +22,7 @@ namespace LogicSimulator
     {
         public int offsetX { get; }
         public int offsetY { get; }
+        public ReferenceablePoint linePoint { get; set; }
         public List<Part> Outputs { get; set; }
         public List<Part> Inputs { get; set; }
         public List<Line> lines {get;set; }

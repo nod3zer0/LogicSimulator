@@ -22,6 +22,7 @@ namespace LogicSimulator
     {
         public int offsetX { get; }
         public int offsetY { get; }
+        public ReferenceablePoint linePoint { get; set; }
         public List<Line> lines { get; set; }
         public AND()
         {
@@ -36,6 +37,13 @@ namespace LogicSimulator
             Input2.lines = new List<Line>();
             Input1.Switch = SwitchI1;
             Input2.Switch = SwitchI2;
+            Input2.offsetX = Input2CB.Margin.Top - Input2CB.Margin.Bottom;
+            Input2.offsetY = Input2CB.Margin.Left - Input2CB.Margin.Right;
+            Input1.offsetX = Input1CB.Margin.Top - Input1CB.Margin.Bottom;
+            Input1.offsetY = Input1CB.Margin.Left - Input1CB.Margin.Right;
+            Output.partControl = OutputCB;
+            Input1.partControl = Input1CB;
+            Input2.partControl = Input2CB;
             Outputs.Add(Output);
             Inputs.Add(Input1);
             Inputs.Add(Input2);
