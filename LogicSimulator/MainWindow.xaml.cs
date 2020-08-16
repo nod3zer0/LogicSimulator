@@ -120,9 +120,24 @@ namespace LogicSimulator
 
             //}
             List<Part> temp = new List<Part>();
-            temp.AddRange(MoveHolder.Inputs);
-           temp.AddRange(MoveHolder.Outputs);
-            foreach (Part input in temp)
+           // temp.AddRange(MoveHolder.Inputs);
+           //temp.AddRange(MoveHolder.Outputs);
+            foreach (Part output in MoveHolder.Outputs)
+            {
+                foreach (Line line in output.lines)
+                {
+                    // line.TranslatePoint(new Point(),)
+                    //double g = VisualTreeHelper.GetOffset((UIElement)MoveHolder).X;
+                    //double f = VisualTreeHelper.GetOffset((UIElement)MoveHolder).Y;
+                    //line.X2 = (VisualTreeHelper.GetOffset(input.partControl).X) ;
+                    //line.Y2 = (VisualTreeHelper.GetOffset((input.partControl)).Y ) ; 
+                    //line.X2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).X) - input.offsetX;
+                    //line.Y2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).Y) - input.offsetY;
+                    line.X2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).X;
+                    line.Y2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).Y;
+                }
+            }
+            foreach (Part input in MoveHolder.Inputs)
             {
                 foreach (Line line in input.lines)
                 {
@@ -133,8 +148,8 @@ namespace LogicSimulator
                     //line.Y2 = (VisualTreeHelper.GetOffset((input.partControl)).Y ) ; 
                     //line.X2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).X) - input.offsetX;
                     //line.Y2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).Y) - input.offsetY;
-                    line.X2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(input.offsetY, input.offsetX)).X;
-                    line.Y2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(input.offsetY, input.offsetX)).Y;
+                    line.X1 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(input.offsetY, input.offsetX)).X;
+                    line.Y1 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(input.offsetY, input.offsetX)).Y;
                 }
             }
             //foreach (Part output in MoveHolder.Outputs)
@@ -361,26 +376,26 @@ namespace LogicSimulator
                 if (!firstPoint)
                 {
 
-                    Line redLine = new Line();
-                    redLine.X1 = Mouse.GetPosition(canvas).X;
-                    redLine.Y1 = Mouse.GetPosition(canvas).Y;
-                    redLine.X2 = lastPouint.X;
-                    redLine.Y2 = lastPouint.Y;
-                    lastPouint = Mouse.GetPosition(canvas);
-                    // Create a red Brush  
-                    SolidColorBrush redBrush = new SolidColorBrush();
-                    redBrush.Color = Colors.Red;
+                    //Line redLine = new Line();
+                    //redLine.X1 = Mouse.GetPosition(canvas).X;
+                    //redLine.Y1 = Mouse.GetPosition(canvas).Y;
+                    //redLine.X2 = lastPouint.X;
+                    //redLine.Y2 = lastPouint.Y;
+                    //lastPouint = Mouse.GetPosition(canvas);
+                    //// Create a red Brush  
+                    //SolidColorBrush redBrush = new SolidColorBrush();
+                    //redBrush.Color = Colors.Red;
 
-                    // Set Line's width and color  
-                    redLine.StrokeThickness = 4;
-                    redLine.Stroke = redBrush;
+                    //// Set Line's width and color  
+                    //redLine.StrokeThickness = 4;
+                    //redLine.Stroke = redBrush;
 
-                    // Add line to the Grid.  
-                    canvas.Children.Add(redLine);
-                    lastLine = redLine;
-                    Lines.Add(redLine);
+                    //// Add line to the Grid.  
+                    //canvas.Children.Add(redLine);
+                    //lastLine = redLine;
+                    //Lines.Add(redLine);
                     //  ((IHolder)sender).lines.Add(redLine);
-                    ((IParts)sender).lines.Add(redLine);
+                    ((IParts)sender).lines.Add(lastLine);
                     
                     firstPoint = !firstPoint;
 
