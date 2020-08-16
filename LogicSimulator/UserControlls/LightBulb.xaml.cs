@@ -20,8 +20,8 @@ namespace LogicSimulator
     /// </summary>
     public partial class LightBulb : UserControl, IParts, IHolder
     {
-        public int offsetX { get; }
-        public  int offsetY { get; }
+        public double offsetX { get; }
+        public double offsetY { get; }
 
         public ReferenceablePoint linePoint { get; set; }
         public event EventHandler ConectorClicked;
@@ -40,14 +40,21 @@ namespace LogicSimulator
             lines = new List<Line>();
             Outputs = new List<Part>();
             Inputs = new List<Part>();
-            offsetX = 50;
-            offsetY = 50;
+            Inputs.Add(Input1);
+
+            Input1.lines = lines;
+            Input1.Switch = switch1;
+
+            offsetX = this.Width / 2;
+            offsetY = this.Height / 2;
+            Input1.offsetX = InputCB.Margin.Top + InputCB.Height / 2; 
+            Input1.offsetY = InputCB.Margin.Left + InputCB.Width / 2;
             Switch = switch1;
         }
-
+        Part Input1 = new Part(50,50);
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ConectorClicked?.Invoke(this, EventArgs.Empty);
+            ConectorClicked?.Invoke(Input1, EventArgs.Empty);
         }
         public Action<bool, int> Switch { get; set; }
 

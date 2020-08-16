@@ -20,8 +20,8 @@ namespace LogicSimulator
     /// </summary>
     public partial class Connector : UserControl, IHolder
     {
-        public int offsetX { get; }
-        public int offsetY { get; }
+        public double offsetX { get; }
+        public double offsetY { get; }
         //TranslateTransform tt =
         public List<Line> lines { get; set; }
         public Line line1 { get; set; }

@@ -20,20 +20,27 @@ namespace LogicSimulator
     /// </summary>
     public partial class NOT : UserControl, IHolder
     {
-        public int offsetX { get; }
-        public int offsetY { get; }
+        public double offsetX { get; }
+        public double offsetY { get; }
         public ReferenceablePoint linePoint { get; set; }
         public List<Part> Outputs { get; set; }
         public List<Part> Inputs { get; set; }
-        public List<Line> lines {get;set; }
+        public List<Line> lines { get; set; }
         public NOT()
         {
             InitializeComponent();
             Outputs = new List<Part>();
             Inputs = new List<Part>();
             lines = new List<Line>();
-            offsetX = 50;
-            offsetY = 50;
+            
+            offsetY = this.Width / 2;
+            offsetX =  this.Height / 2;
+            Input2.offsetY = InputCB.Margin.Left + InputCB.Width/2;
+            Input2.offsetX = InputCB.Margin.Top + InputCB.Height/2;
+
+            Output.offsetY = OutputCB.Margin.Left + OutputCB.Width/2;
+            Output.offsetX = OutputCB.Margin.Top + OutputCB.Height/2;
+
             Input2.Switch = Switch;
             Output.parts = new List<IParts>();
             Inputs.Add(Input2);
@@ -41,9 +48,9 @@ namespace LogicSimulator
         }
 
         public List<IParts> parts { get; set; }
-     
+
         Part Input2 = new Part(10, 10);
-        Part Output = new Part(10,100);
+        Part Output = new Part(10, 100);
         public IParts input { get; set; }
 
         public event EventHandler InputClicked;

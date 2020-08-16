@@ -17,8 +17,8 @@ namespace LogicSimulator
         ReferenceablePoint linePoint { get; set; }
         List<Part> Inputs { get; set; }
         List<Part> Outputs { get; set; }
-        int offsetX { get; }
-        int offsetY { get; }
+        double offsetX { get; }
+        double offsetY { get; }
 
     }
 }

@@ -119,7 +119,10 @@ namespace LogicSimulator
             //    line.Y2 = Mouse.GetPosition(canvas).Y;
 
             //}
-            foreach (Part input in MoveHolder.Inputs)
+            List<Part> temp = new List<Part>();
+            temp.AddRange(MoveHolder.Inputs);
+           temp.AddRange(MoveHolder.Outputs);
+            foreach (Part input in temp)
             {
                 foreach (Line line in input.lines)
                 {
@@ -134,16 +137,16 @@ namespace LogicSimulator
                     line.Y2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(input.offsetY, input.offsetX)).Y;
                 }
             }
-            foreach (Part output in MoveHolder.Outputs)
-            {
-                foreach (Line line in output.lines)
-                {
+            //foreach (Part output in MoveHolder.Outputs)
+            //{
+            //    foreach (Line line in output.lines)
+            //    {
 
-                    line.X2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).X;
-                    line.Y2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).Y;
+            //        line.X2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).X;
+            //        line.Y2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).Y;
 
-                }
-            }
+            //    }
+            //}
 
 
 
@@ -195,8 +198,8 @@ namespace LogicSimulator
                 //    b.TransformToAncestor(canvas).Transform(Mouse.GetPosition(canvas));
                 b.ConectorClicked += Button_ConectorClicked;
                 //přetahování myší
-                b.MouseLeftButtonDown += Object_MouseLeftButtonDown;
-                b.MouseLeftButtonUp += Object_MouseLeftButtonUp;
+                b.PreviewMouseLeftButtonDown += Object_MouseLeftButtonDown;
+                b.PreviewMouseLeftButtonUp += Object_MouseLeftButtonUp;
 
                 Canvas.SetLeft(b, Mouse.GetPosition(canvas).X);
                 Canvas.SetTop(b, Mouse.GetPosition(canvas).Y);

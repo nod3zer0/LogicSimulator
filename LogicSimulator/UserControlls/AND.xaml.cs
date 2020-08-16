@@ -20,8 +20,8 @@ namespace LogicSimulator
     /// </summary>
     public partial class AND : UserControl, IHolder
     {
-        public int offsetX { get; }
-        public int offsetY { get; }
+        public double offsetX { get; }
+        public double offsetY { get; }
         public ReferenceablePoint linePoint { get; set; }
         public List<Line> lines { get; set; }
         public AND()
@@ -31,16 +31,21 @@ namespace LogicSimulator
             Outputs = new List<Part>();
             Inputs = new List<Part>();
             lines = new List<Line>();
-            offsetX = 50;
-            offsetY = 50;
+            offsetX = this.Width / 2;
+            offsetY =  this.Height / 2;
             Input1.lines = new List<Line>();
             Input2.lines = new List<Line>();
+
+           
+
             Input1.Switch = SwitchI1;
             Input2.Switch = SwitchI2;
-            Input2.offsetX = Input2CB.Margin.Top - Input2CB.Margin.Bottom;
-            Input2.offsetY = Input2CB.Margin.Left - Input2CB.Margin.Right;
-            Input1.offsetX = Input1CB.Margin.Top - Input1CB.Margin.Bottom;
-            Input1.offsetY = Input1CB.Margin.Left - Input1CB.Margin.Right;
+            Input2.offsetX = Input2CB.Margin.Top + Input2CB.Height / 2;
+            Input2.offsetY = Input2CB.Margin.Left + Input2CB.Width / 2;
+            Input1.offsetX = Input1CB.Margin.Top + Input1CB.Height / 2;
+            Input1.offsetY = Input1CB.Margin.Left + Input1CB.Width / 2;
+            Output.offsetX = OutputCB.Margin.Top + OutputCB.Height / 2;
+            Output.offsetY = OutputCB.Margin.Left + OutputCB.Width / 2;
             Output.partControl = OutputCB;
             Input1.partControl = Input1CB;
             Input2.partControl = Input2CB;

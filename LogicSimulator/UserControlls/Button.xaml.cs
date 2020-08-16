@@ -21,8 +21,8 @@ namespace LogicSimulator
     /// </summary>
     public partial class Button : UserControl, IParts,  IHolder
     {
-        public int offsetX { get; }
-        public int offsetY { get; }
+        public double offsetX { get; }
+        public double offsetY { get; }
 
         public ReferenceablePoint linePoint { get; set; }
         public event EventHandler ConectorClicked;

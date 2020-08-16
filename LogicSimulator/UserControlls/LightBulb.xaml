@@ -7,7 +7,7 @@
              mc:Ignorable="d" Height="101.2" Width="119.2">
     <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseLeftButtonUp="Grid_MouseLeftButtonUp" MouseMove="Grid_MouseMove">
         <Ellipse x:Name="Bulb" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="100" Margin="19,1,0,-0.2"/>
-        <Button x:Name="ConnectorButton" Content="Button" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" Width="9" Height="10" Click="Button_Click"/>
+        <Button x:Name="InputCB" Content="Button" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" Width="9" Height="10" Click="Button_Click"/>
 
     </Grid>
 </UserControl>

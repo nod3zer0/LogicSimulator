@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogicSimulator"
              mc:Ignorable="d" Height="69.498" Width="107.677">
-    <Grid Margin="0,0,-0.4,-0.4">
+    <Grid x:Name="MainGrid" Width="108" Height="69.6" Margin="0,0,0,0" >
         <Image Source="C:\Users\game1\source\repos\LogicSimulator\LogicSimulator\NOT.png" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="100" Margin="0,0,0,-0.4"/>
-        <Button Content="" HorizontalAlignment="Left" Margin="0,24,0,0" VerticalAlignment="Top" Width="15" Click="InputButton_Click"/>
-        <Button Content="" HorizontalAlignment="Left" Margin="93,24,0,0" VerticalAlignment="Top" Width="15" Click="OutputButton_Click_1"/>
+        <Button x:Name="InputCB" Content="" HorizontalAlignment="Left" Margin="0,24,0,0" VerticalAlignment="Top" Width="15" Click="InputButton_Click" Height="19.2"/>
+        <Button x:Name="OutputCB" Content="" HorizontalAlignment="Left" Margin="93,24,0,0" VerticalAlignment="Top" Width="15" Click="OutputButton_Click_1" Height="19.2"/>
 
     </Grid>
 </UserControl>
