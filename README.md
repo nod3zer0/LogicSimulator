@@ -1,0 +1,4 @@
+# LogicSimulator
+It is my Maturita project. 
+At the moment it is little bit of mess, and I will get the code together soon, but now I need to get basic functionality working.
+Progress you can see also on: https://trello.com/b/ZlQ4tNS2/logic-simulator
