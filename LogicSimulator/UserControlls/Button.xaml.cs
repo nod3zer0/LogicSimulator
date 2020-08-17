@@ -19,13 +19,14 @@ namespace LogicSimulator
     /// <summary>
     /// Interaction logic for Button.xaml
     /// </summary>
-    public partial class Button : UserControl, IParts,  IHolder
+    public partial class Button : UserControl, IParts, IHolder
     {
         public double offsetX { get; }
         public double offsetY { get; }
 
         public ReferenceablePoint linePoint { get; set; }
         public event EventHandler ConectorClicked;
+        public event EventHandler Pressed;
         public List<Part> Outputs { get; set; }
         public List<Part> Inputs { get; set; }
         public Connection connection { get; set; }
@@ -38,13 +39,19 @@ namespace LogicSimulator
         public Button()
         {
             InitializeComponent();
+
+
             Outputs = new List<Part>();
             Inputs = new List<Part>();
             lines = new List<Line>();
-            offsetX = 50;
-            offsetY = 50;
+            offsetX = this.Width / 2;
+            offsetY = this.Height / 2;
             parts = new List<IParts>();
-          //  Outputs.Add((Part)this);
+            Output.lines = lines;
+            Output.offsetY = OutputCB.Margin.Left + OutputCB.Width / 2;
+            Output.offsetX = OutputCB.Margin.Top + OutputCB.Height / 2;
+            Output.Switch = switch1;
+            Outputs.Add(Output);
             Switch = switch1;
             Output.Switch = switch1;
             Output.parts = new List<IParts>();
@@ -63,7 +70,7 @@ namespace LogicSimulator
                 part.Switch(power, tick);
             }
 
-        
+
         }
 
 
@@ -79,8 +86,8 @@ namespace LogicSimulator
         {
 
             power = !power;
-
-           // connection.Power = power;
+            Output.power = power;
+            // connection.Power = power;
 
 
             if (Tlacitko.Background != Brushes.Red)
@@ -105,5 +112,7 @@ namespace LogicSimulator
             //    part.Switch(p);
             //}
         }
+
+
     }
 }

@@ -49,11 +49,17 @@ namespace LogicSimulator
         IHolder MoveHolder;
         //    Control MoveHolder;
 
-        private void Object_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Object_MouseLeftButtonDown(object sender, EventArgs e)
         {
+            //var x = MoveHolder as Button;
+            //if (x != null)
+            //{
+               
+            //}
+
             MoveHolder = (IHolder)sender;
         }
-        private void Object_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Object_MouseLeftButtonUp(object sender, EventArgs e)
         {
             MoveHolder = null;
         }
@@ -73,7 +79,7 @@ namespace LogicSimulator
 
 
                 TempLine.Y2 = lastPouint.Y;
-               
+
                 // Create a red Brush  
                 SolidColorBrush redBrush = new SolidColorBrush();
                 redBrush.Color = Colors.Red;
@@ -81,8 +87,8 @@ namespace LogicSimulator
                 // Set Line's width and color  
                 TempLine.StrokeThickness = 4;
                 TempLine.Stroke = redBrush;
-               
-              
+
+
                 // Add line to the Grid.  
                 canvas.Children.Add(TempLine);
                 Canvas.SetZIndex(TempLine, -10);
@@ -107,12 +113,14 @@ namespace LogicSimulator
 
 
             double s = Canvas.GetTop((UIElement)MoveHolder);
-            double y = (Mouse.GetPosition(canvas).X );
-            double xratio = Canvas.GetTop((UIElement)MoveHolder) - (Mouse.GetPosition(canvas).X );
-            double yratio = Canvas.GetLeft((UIElement)MoveHolder) - (Mouse.GetPosition(canvas).Y );
+            double y = (Mouse.GetPosition(canvas).X);
+            double xratio = Canvas.GetTop((UIElement)MoveHolder) - (Mouse.GetPosition(canvas).X);
+            double yratio = Canvas.GetLeft((UIElement)MoveHolder) - (Mouse.GetPosition(canvas).Y);
             Canvas.SetLeft((UIElement)MoveHolder, Mouse.GetPosition(canvas).X - MoveHolder.offsetX);
             Canvas.SetTop((UIElement)MoveHolder, Mouse.GetPosition(canvas).Y - MoveHolder.offsetY);
 
+
+           
             //foreach (Line line in (MoveHolder).lines)
             //{
             //    line.X2 = Mouse.GetPosition(canvas).X;
@@ -120,8 +128,8 @@ namespace LogicSimulator
 
             //}
             List<Part> temp = new List<Part>();
-           // temp.AddRange(MoveHolder.Inputs);
-           //temp.AddRange(MoveHolder.Outputs);
+            // temp.AddRange(MoveHolder.Inputs);
+            //temp.AddRange(MoveHolder.Outputs);
             foreach (Part output in MoveHolder.Outputs)
             {
                 foreach (Line line in output.lines)
@@ -178,7 +186,7 @@ namespace LogicSimulator
                 }
             }
 
-            
+
 
             //MoveHolder.RenderTransform = tt;
             //MoveHolder.
@@ -197,8 +205,8 @@ namespace LogicSimulator
                 //kliknutí na připojovák
                 b.ConectorClicked += input_ConectorClicked;
                 //přetahování myší
-                b.MouseLeftButtonDown += Object_MouseLeftButtonDown;
-                b.MouseLeftButtonUp += Object_MouseLeftButtonUp;
+                b.MouseRightButtonDown += Object_MouseLeftButtonDown;
+                b.MouseRightButtonUp += Object_MouseLeftButtonUp;
                 //umístění na kurzor myši
                 Canvas.SetLeft(b, Mouse.GetPosition(canvas).X);
                 Canvas.SetTop(b, Mouse.GetPosition(canvas).Y);
@@ -213,8 +221,11 @@ namespace LogicSimulator
                 //    b.TransformToAncestor(canvas).Transform(Mouse.GetPosition(canvas));
                 b.ConectorClicked += Button_ConectorClicked;
                 //přetahování myší
-                b.PreviewMouseLeftButtonDown += Object_MouseLeftButtonDown;
-                b.PreviewMouseLeftButtonUp += Object_MouseLeftButtonUp;
+
+                b.MouseRightButtonDown += Object_MouseLeftButtonDown;
+                b.MouseRightButtonUp += Object_MouseLeftButtonUp;
+                //b.AddHandler(UIElement.MouseLeftButtonDownEvent, (RoutedEventHandler)Object_MouseLeftButtonDown, true);
+                //b.AddHandler(UIElement.MouseLeftButtonUpEvent, (RoutedEventHandler)Object_MouseLeftButtonUp, true);
 
                 Canvas.SetLeft(b, Mouse.GetPosition(canvas).X);
                 Canvas.SetTop(b, Mouse.GetPosition(canvas).Y);
@@ -228,8 +239,8 @@ namespace LogicSimulator
                 not.InputClicked += input_ConectorClicked;
                 not.OutputClicked += Button_ConectorClicked;
                 //přetahování myší
-                not.MouseLeftButtonDown += Object_MouseLeftButtonDown;
-                not.MouseLeftButtonUp += Object_MouseLeftButtonUp;
+                not.MouseRightButtonDown += Object_MouseLeftButtonDown;
+                not.MouseRightButtonUp += Object_MouseLeftButtonUp;
 
                 Canvas.SetLeft(not, Mouse.GetPosition(canvas).X);
                 Canvas.SetTop(not, Mouse.GetPosition(canvas).Y);
@@ -243,8 +254,8 @@ namespace LogicSimulator
                 and.OutputClicked += Button_ConectorClicked;
 
                 //přetahování myší
-                and.MouseLeftButtonDown += Object_MouseLeftButtonDown;
-                and.MouseLeftButtonUp += Object_MouseLeftButtonUp;
+                and.MouseRightButtonDown += Object_MouseLeftButtonDown;
+                and.MouseRightButtonUp += Object_MouseLeftButtonUp;
 
                 Canvas.SetLeft(and, Mouse.GetPosition(canvas).X);
                 Canvas.SetTop(and, Mouse.GetPosition(canvas).Y);
@@ -252,7 +263,7 @@ namespace LogicSimulator
             }
             else if (!firstPoint && LineButton.IsChecked == true)
             {
-                
+
                 Line redLine = new Line();
 
                 Connector con = new Connector();
@@ -260,8 +271,8 @@ namespace LogicSimulator
                 Canvas.SetLeft(con, lastPouint.X - ((IHolder)con).offsetX);
                 Canvas.SetTop(con, lastPouint.Y - ((IHolder)con).offsetX);
 
-                con.MouseLeftButtonDown += Object_MouseLeftButtonDown;
-                con.MouseLeftButtonUp += Object_MouseLeftButtonUp;
+                con.MouseRightButtonDown += Object_MouseLeftButtonDown;
+                con.MouseRightButtonUp += Object_MouseLeftButtonUp;
                 con.line1 = redLine;
                 con.line2 = lastLine;
                 if (lastLine != null)
@@ -284,6 +295,7 @@ namespace LogicSimulator
                 // Set Line's width and color  
                 redLine.StrokeThickness = 4;
                 redLine.Stroke = redBrush;
+                
                 Lines.Add(redLine);
                 lastLine = redLine;
                 if (firstLine)
@@ -292,6 +304,7 @@ namespace LogicSimulator
                     firstLine = false;
                 }
                 // Add line to the Grid.  
+        
                 canvas.Children.Add(redLine);
                 Canvas.SetZIndex(redLine, -10);
             }
@@ -372,7 +385,7 @@ namespace LogicSimulator
             {
                 output.parts.Add((IParts)sender);
                 ((IParts)sender).input = output;
-                
+
                 if (!firstPoint)
                 {
 
@@ -396,13 +409,13 @@ namespace LogicSimulator
                     //Lines.Add(redLine);
                     //  ((IHolder)sender).lines.Add(redLine);
                     ((IParts)sender).lines.Add(lastLine);
-                    
+
                     firstPoint = !firstPoint;
 
                 }
-               
+
                 output = null;
-                
+
             }
             else if (((IParts)sender).input != null)
             {
@@ -428,7 +441,7 @@ namespace LogicSimulator
                     canvas.Children.Add(redLine);
                     lastLine = redLine;
                     ((IHolder)sender).lines.Add(redLine);
-                
+
                     Lines.Add(redLine);
 
 
@@ -705,7 +718,7 @@ namespace LogicSimulator
             }
 
             firstPoint = !firstPoint;
-            
+
             lastPouint = Mouse.GetPosition(canvas);
             lastLine = null;
             firstLine = true;
