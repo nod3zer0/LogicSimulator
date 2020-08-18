@@ -15,7 +15,10 @@ namespace LogicSimulator
         //  void Switch(bool power);
         ReferenceablePoint linePoint { get; set; }
         List<Line> lines { get; set; }
+        List<Connector> connectors { get; set; }
         List<IParts> parts { get; set; }
+        List<Part> Outputs { get; set; }
+        List<Part> Inputs { get; set; }
         IParts input { get; set; }
         Action<bool, int> Switch { get; set; }
     }

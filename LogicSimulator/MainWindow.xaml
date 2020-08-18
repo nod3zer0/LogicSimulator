@@ -28,6 +28,7 @@
             <RadioButton x:Name="LineButton" Content="Line" Width="75"/>
             <RadioButton x:Name="NOTRButton" Content="NOT" Width="75"/>
             <RadioButton x:Name="ANDRButton"  Content="AND" Width="75"/>
+            <RadioButton x:Name="DeleteRButton"  Content="Delete" Width="75"/>
             <RadioButton Content="Button" Width="75"/>
 
         </Menu>

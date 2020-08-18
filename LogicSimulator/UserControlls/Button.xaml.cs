@@ -23,7 +23,7 @@ namespace LogicSimulator
     {
         public double offsetX { get; }
         public double offsetY { get; }
-
+        public List<Connector> connectors { get; set; }
         public ReferenceablePoint linePoint { get; set; }
         public event EventHandler ConectorClicked;
         public event EventHandler Pressed;
@@ -40,14 +40,16 @@ namespace LogicSimulator
         {
             InitializeComponent();
 
-
+            connectors = new List<Connector>();
+            Output.parrent = this;
             Outputs = new List<Part>();
             Inputs = new List<Part>();
             lines = new List<Line>();
             offsetX = this.Width / 2;
             offsetY = this.Height / 2;
             parts = new List<IParts>();
-            Output.lines = lines;
+            lines = new List<Line>();
+            Output.lines = new List<Line>();
             Output.offsetY = OutputCB.Margin.Left + OutputCB.Width / 2;
             Output.offsetX = OutputCB.Margin.Top + OutputCB.Height / 2;
             Output.Switch = switch1;
@@ -65,7 +67,7 @@ namespace LogicSimulator
             lastTick = tick;
 
 
-            foreach (IParts part in parts)
+            foreach (IParts part in Output.parts)
             {
                 part.Switch(power, tick);
             }
@@ -79,7 +81,7 @@ namespace LogicSimulator
         {
 
             //     ConectorClicked?.Invoke(this, EventArgs.Empty);
-            ConectorClicked?.Invoke(this, EventArgs.Empty);
+            ConectorClicked?.Invoke(Output, EventArgs.Empty);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

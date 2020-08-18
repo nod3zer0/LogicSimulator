@@ -54,10 +54,33 @@ namespace LogicSimulator
             //var x = MoveHolder as Button;
             //if (x != null)
             //{
-               
-            //}
 
-            MoveHolder = (IHolder)sender;
+            //}
+            if (DeleteRButton.IsChecked == true)
+            {
+                var x = sender as IParts;
+                if (x != null)
+                {
+                    ((IParts)sender).lines.ForEach(l => canvas.Children.Remove(l));
+                    ((IParts)sender).connectors.ForEach(c => canvas.Children.Remove(c));
+                    ((IParts)sender).lines = new List<Line>();
+                    if (((IParts)sender).Inputs != null)
+                    {
+                        ((IParts)sender).Inputs.ForEach(i => i.input.parts.Remove(i));
+                    }
+                  ((IParts)sender).Outputs.ForEach(o => o.parts.ForEach(p => p.Switch(false, 0)));
+                    ((IParts)sender).Outputs.ForEach(o => powerSupplys.Remove(o));
+
+
+                    canvas.Children.Remove((UIElement)sender);
+                }
+              
+            }
+            else
+            {
+                MoveHolder = (IHolder)sender;
+            }
+
         }
         private void Object_MouseLeftButtonUp(object sender, EventArgs e)
         {
@@ -65,6 +88,7 @@ namespace LogicSimulator
         }
 
         Line TempLine = new Line();
+        List<Connector> tempConnectors = new List<Connector>();
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
 
@@ -120,7 +144,7 @@ namespace LogicSimulator
             Canvas.SetTop((UIElement)MoveHolder, Mouse.GetPosition(canvas).Y - MoveHolder.offsetY);
 
 
-           
+
             //foreach (Line line in (MoveHolder).lines)
             //{
             //    line.X2 = Mouse.GetPosition(canvas).X;
@@ -134,13 +158,7 @@ namespace LogicSimulator
             {
                 foreach (Line line in output.lines)
                 {
-                    // line.TranslatePoint(new Point(),)
-                    //double g = VisualTreeHelper.GetOffset((UIElement)MoveHolder).X;
-                    //double f = VisualTreeHelper.GetOffset((UIElement)MoveHolder).Y;
-                    //line.X2 = (VisualTreeHelper.GetOffset(input.partControl).X) ;
-                    //line.Y2 = (VisualTreeHelper.GetOffset((input.partControl)).Y ) ; 
-                    //line.X2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).X) - input.offsetX;
-                    //line.Y2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).Y) - input.offsetY;
+
                     line.X2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).X;
                     line.Y2 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(output.offsetY, output.offsetX)).Y;
                 }
@@ -149,13 +167,7 @@ namespace LogicSimulator
             {
                 foreach (Line line in input.lines)
                 {
-                    // line.TranslatePoint(new Point(),)
-                    //double g = VisualTreeHelper.GetOffset((UIElement)MoveHolder).X;
-                    //double f = VisualTreeHelper.GetOffset((UIElement)MoveHolder).Y;
-                    //line.X2 = (VisualTreeHelper.GetOffset(input.partControl).X) ;
-                    //line.Y2 = (VisualTreeHelper.GetOffset((input.partControl)).Y ) ; 
-                    //line.X2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).X) - input.offsetX;
-                    //line.Y2 = (VisualTreeHelper.GetOffset((UIElement)MoveHolder).Y) - input.offsetY;
+
                     line.X1 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(input.offsetY, input.offsetX)).X;
                     line.Y1 = ((Control)MoveHolder).TransformToAncestor(canvas).Transform(new Point(input.offsetY, input.offsetX)).Y;
                 }
@@ -196,6 +208,7 @@ namespace LogicSimulator
 
         Line lastLine;
         bool firstLine = false;
+        List<Line> tempLines = new List<Line>();
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
@@ -229,7 +242,7 @@ namespace LogicSimulator
 
                 Canvas.SetLeft(b, Mouse.GetPosition(canvas).X);
                 Canvas.SetTop(b, Mouse.GetPosition(canvas).Y);
-                powerSupplys.Add(b);
+                powerSupplys.AddRange(b.Outputs);
                 canvas.Children.Add(b);
             }
             else if (NOTRButton.IsChecked == true)
@@ -280,6 +293,7 @@ namespace LogicSimulator
                     canvas.Children.Add(con);
                 }
 
+                tempConnectors.Add(con);
                 Canvas.SetZIndex(con, 10);
                 redLine.X1 = Mouse.GetPosition(canvas).X;
                 redLine.Y1 = Mouse.GetPosition(canvas).Y;
@@ -295,7 +309,7 @@ namespace LogicSimulator
                 // Set Line's width and color  
                 redLine.StrokeThickness = 4;
                 redLine.Stroke = redBrush;
-                
+
                 Lines.Add(redLine);
                 lastLine = redLine;
                 if (firstLine)
@@ -304,8 +318,9 @@ namespace LogicSimulator
                     firstLine = false;
                 }
                 // Add line to the Grid.  
-        
+
                 canvas.Children.Add(redLine);
+                tempLines.Add(redLine);
                 Canvas.SetZIndex(redLine, -10);
             }
             //else
@@ -408,6 +423,10 @@ namespace LogicSimulator
                     //lastLine = redLine;
                     //Lines.Add(redLine);
                     //  ((IHolder)sender).lines.Add(redLine);
+                    ((Part)sender).parrent.lines.AddRange(tempLines);
+                    ((Part)output).parrent.lines.AddRange(tempLines);
+                    ((Part)sender).parrent.connectors.AddRange(tempConnectors);
+                    ((Part)output).parrent.connectors.AddRange(tempConnectors);
                     ((IParts)sender).lines.Add(lastLine);
 
                     firstPoint = !firstPoint;
@@ -420,262 +439,46 @@ namespace LogicSimulator
             else if (((IParts)sender).input != null)
             {
                 output = ((IParts)sender).input;
+
                 if (!firstPoint)
                 {
 
-                    Line redLine = new Line();
-                    redLine.X1 = Mouse.GetPosition(canvas).X;
-                    redLine.Y1 = Mouse.GetPosition(canvas).Y;
-                    redLine.X2 = lastPouint.X;
-                    redLine.Y2 = lastPouint.Y;
-                    lastPouint = Mouse.GetPosition(canvas);
-                    // Create a red Brush  
-                    SolidColorBrush redBrush = new SolidColorBrush();
-                    redBrush.Color = Colors.Red;
+                    //Line redLine = new Line();
+                    //redLine.X1 = Mouse.GetPosition(canvas).X;
+                    //redLine.Y1 = Mouse.GetPosition(canvas).Y;
+                    //redLine.X2 = lastPouint.X;
+                    //redLine.Y2 = lastPouint.Y;
+                    //lastPouint = Mouse.GetPosition(canvas);
+                    //// Create a red Brush  
+                    //SolidColorBrush redBrush = new SolidColorBrush();
+                    //redBrush.Color = Colors.Red;
 
-                    // Set Line's width and color  
-                    redLine.StrokeThickness = 4;
-                    redLine.Stroke = redBrush;
+                    //// Set Line's width and color  
+                    //redLine.StrokeThickness = 4;
+                    //redLine.Stroke = redBrush;
 
-                    // Add line to the Grid.  
-                    canvas.Children.Add(redLine);
-                    lastLine = redLine;
-                    ((IHolder)sender).lines.Add(redLine);
+                    //// Add line to the Grid.  
+                    //canvas.Children.Add(redLine);
 
-                    Lines.Add(redLine);
+                    //lastLine = redLine;
+                    ((Part)sender).InputParts.Add(output);
+                    ((Part)sender).parrent.lines.AddRange(tempLines);
+                    ((Part)output).parrent.lines.AddRange(tempLines);
+                    ((Part)sender).parrent.connectors.AddRange(tempConnectors);
+                    ((Part)output).parrent.connectors.AddRange(tempConnectors);
+                    ((IHolder)sender).lines.Add(lastLine);
+
+                    Lines.Add(lastLine);
 
 
                 }
                 firstPoint = !firstPoint;
             }
-            //nepoužitej kod
-            #region
-
-            //---------------------------------------------------------------------------------------------------
-            //if (((Parts)sender).connection == null && connection == null)
-            //{
-            //    connection = new Connection();
-            //    connection.Passive.Add((Control)sender);
-            //    connection.Id = lastId + 1;
-            //    lastId++;
-            //    ((Parts)sender).connection = connection;
-
-            //}
-            //else if (((Parts)sender).connection == null && connection != null)
-            //{
-            //    connection.Passive.Add((Control)sender);
-            //    ((Parts)sender).connection = connection;
-
-            //    if (!firstPoint)
-            //    {
-
-            //        Line redLine = new Line();
-            //        redLine.X1 = Mouse.GetPosition(canvas).X;
-            //        redLine.Y1 = Mouse.GetPosition(canvas).Y;
-            //        redLine.X2 = lastPouint.X;
-            //        redLine.Y2 = lastPouint.Y;
-            //        lastPouint = Mouse.GetPosition(canvas);
-            //        // Create a red Brush  
-            //        SolidColorBrush redBrush = new SolidColorBrush();
-            //        redBrush.Color = Colors.Red;
-
-            //        // Set Line's width and color  
-            //        redLine.StrokeThickness = 4;
-            //        redLine.Stroke = redBrush;
-
-            //        // Add line to the Grid.  
-            //        canvas.Children.Add(redLine);
-
-            //        Lines.Add(redLine);
-            //        connection.Lines.Add(redLine);
 
 
 
-            //        connections.Add(connection);
-
-
-            //        connection = new Connection();
-
-            //    }
-            //}
-            //else if (((Parts)sender).connection != null && connection == null)
-            //{
-            //    connection = new Connection();
-            //    connection = ((Parts)sender).connection;
-            //    connection.Passive.Add((Control)sender);
-            //    ((Parts)sender).connection = connection;
-
-            //    if (!firstPoint)
-            //    {
-
-            //        Line redLine = new Line();
-            //        redLine.X1 = Mouse.GetPosition(canvas).X;
-            //        redLine.Y1 = Mouse.GetPosition(canvas).Y;
-            //        redLine.X2 = lastPouint.X;
-            //        redLine.Y2 = lastPouint.Y;
-            //        lastPouint = Mouse.GetPosition(canvas);
-            //        // Create a red Brush  
-            //        SolidColorBrush redBrush = new SolidColorBrush();
-            //        redBrush.Color = Colors.Red;
-
-            //        // Set Line's width and color  
-            //        redLine.StrokeThickness = 4;
-            //        redLine.Stroke = redBrush;
-
-            //        // Add line to the Grid.  
-            //        canvas.Children.Add(redLine);
-
-            //        Lines.Add(redLine);
-            //        connection.Lines.Add(redLine);
-
-
-
-            //        connections.Add(connection);
-
-
-
-            //        connection = null;
-
-            //    }
-            //}
-            //else if (((Parts)sender).connection != null && connection != null)
-            //{
-
-            //    connection.AddRange(((Parts)sender).connection);
-            //    ((Parts)sender).connection = connection;
-
-            //    if (!firstPoint)
-            //    {
-
-            //        Line redLine = new Line();
-            //        redLine.X1 = Mouse.GetPosition(canvas).X;
-            //        redLine.Y1 = Mouse.GetPosition(canvas).Y;
-            //        redLine.X2 = lastPouint.X;
-            //        redLine.Y2 = lastPouint.Y;
-            //        lastPouint = Mouse.GetPosition(canvas);
-            //        // Create a red Brush  
-            //        SolidColorBrush redBrush = new SolidColorBrush();
-            //        redBrush.Color = Colors.Red;
-
-            //        // Set Line's width and color  
-            //        redLine.StrokeThickness = 4;
-            //        redLine.Stroke = redBrush;
-
-            //        // Add line to the Grid.  
-            //        canvas.Children.Add(redLine);
-
-            //        Lines.Add(redLine);
-            //        connection.Lines.Add(redLine);
-
-            //        connections.Remove(connections.Where(c => c.Id == ((Parts)sender).connection.Id).First());
-
-            //        //if (((Parts)sender).connection != null && connection == null)
-            //        //{
-            //        //    connections.Add(connection);
-            //        //}
-            //        //else if (((Parts)sender).connection == null && connection != null)
-            //        //{
-            //        //    connections.Add(connection);
-            //        //}
-            //        //else
-            //        //{
-            //        //    connections.Remove(connections.Where(c => c.Id == ((Parts)sender).connection.Id).First());
-            //        //    connections.Add(connection);
-            //        //}
-
-            //        connection = null;
-
-            //    }
-            //}
-
-
-
-            //firstPoint = !firstPoint;
-            //lastPouint = Mouse.GetPosition(canvas);
-
-
-
-            //---------------------------------------------------------------------------------------------------
-            //if(((Parts)sender).connection == null)
-            //{
-            //    connection.Passive.Add((Control)sender);
-            //    connection.RemoveDuplicates();
-            //    ((Parts)sender).connection = connection;
-
-            //    if (!firstPoint)
-            //    {
-
-            //        Line redLine = new Line();
-            //        redLine.X1 = Mouse.GetPosition(canvas).X;
-            //        redLine.Y1 = Mouse.GetPosition(canvas).Y;
-            //        redLine.X2 = lastPouint.X;
-            //        redLine.Y2 = lastPouint.Y;
-            //        lastPouint = Mouse.GetPosition(canvas);
-            //        // Create a red Brush  
-            //        SolidColorBrush redBrush = new SolidColorBrush();
-            //        redBrush.Color = Colors.Red;
-
-            //        // Set Line's width and color  
-            //        redLine.StrokeThickness = 4;
-            //        redLine.Stroke = redBrush;
-
-            //        // Add line to the Grid.  
-            //        canvas.Children.Add(redLine);
-
-            //        Lines.Add(redLine);
-            //        connection.Lines.Add(redLine);
-            //        if (connections[connections.Count+1].Id != connection.Id)
-            //        {
-            //            connections.Add(connection);
-            //        }
-
-            //        connection = new Connection();
-
-            //    }
-            //}
-            //else
-            //{
-            //   connection.AddRange(((Parts)sender).connection);
-            //   connection.RemoveDuplicates();
-            //   ((Parts)sender).connection = connection;
-
-            //    if (!firstPoint)
-            //    {
-
-            //        Line redLine = new Line();
-            //        redLine.X1 = Mouse.GetPosition(canvas).X;
-            //        redLine.Y1 = Mouse.GetPosition(canvas).Y;
-            //        redLine.X2 = lastPouint.X;
-            //        redLine.Y2 = lastPouint.Y;
-            //        lastPouint = Mouse.GetPosition(canvas);
-            //        // Create a red Brush  
-            //        SolidColorBrush redBrush = new SolidColorBrush();
-            //        redBrush.Color = Colors.Red;
-
-            //        // Set Line's width and color  
-            //        redLine.StrokeThickness = 4;
-            //        redLine.Stroke = redBrush;
-
-            //        // Add line to the Grid.  
-            //        canvas.Children.Add(redLine);
-
-            //        Lines.Add(redLine);
-            //        connection.Lines.Add(redLine);
-            //        if (!connections.Contains(connection))
-            //        {
-            //            connections.Add(connection);
-            //        }
-
-            //        connection = new Connection();
-
-            //    }
-            //}
-
-
-            //firstPoint = !firstPoint;
-            //lastPouint = Mouse.GetPosition(canvas);
         }
-        #endregion
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -716,7 +519,7 @@ namespace LogicSimulator
             {
                 output = (IParts)sender;
             }
-
+            tempLines = new List<Line>();
             firstPoint = !firstPoint;
 
             lastPouint = Mouse.GetPosition(canvas);

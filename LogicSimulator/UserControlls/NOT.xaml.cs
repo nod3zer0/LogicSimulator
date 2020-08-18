@@ -18,10 +18,13 @@ namespace LogicSimulator
     /// <summary>
     /// Interaction logic for NOT.xaml
     /// </summary>
-    public partial class NOT : UserControl, IHolder
+    public partial class NOT : UserControl, IHolder, IParts
     {
         public double offsetX { get; }
         public double offsetY { get; }
+        public bool power { get; set; }
+        public List<Connector> connectors { get; set; }
+        public Action<bool, int> Switch { get; set; }
         public ReferenceablePoint linePoint { get; set; }
         public List<Part> Outputs { get; set; }
         public List<Part> Inputs { get; set; }
@@ -32,8 +35,8 @@ namespace LogicSimulator
             Outputs = new List<Part>();
             Inputs = new List<Part>();
             lines = new List<Line>();
-            
-            offsetY = this.Width / 2;
+            connectors = new List<Connector>();
+        offsetY = this.Width / 2;
             offsetX =  this.Height / 2;
             Input2.offsetY = InputCB.Margin.Left + InputCB.Width/2;
             Input2.offsetX = InputCB.Margin.Top + InputCB.Height/2;
@@ -41,7 +44,11 @@ namespace LogicSimulator
             Output.offsetY = OutputCB.Margin.Left + OutputCB.Width/2;
             Output.offsetX = OutputCB.Margin.Top + OutputCB.Height/2;
 
-            Input2.Switch = Switch;
+            
+            Input2.parrent = this;
+            Output.parrent = this;
+
+            Input2.Switch = Switch1;
             Output.parts = new List<IParts>();
             Inputs.Add(Input2);
             Outputs.Add(Output);
@@ -59,7 +66,7 @@ namespace LogicSimulator
         public Connection connection { get; set; }
         bool all = false;
         int lastTick = 0;
-        public void Switch(bool power, int tick)
+        public void Switch1(bool power, int tick)
         {
             if (lastTick == tick)
             {

@@ -18,25 +18,31 @@ namespace LogicSimulator
     /// <summary>
     /// Interaction logic for AND.xaml
     /// </summary>
-    public partial class AND : UserControl, IHolder
+    public partial class AND : UserControl, IHolder, IParts
     {
         public double offsetX { get; }
         public double offsetY { get; }
+        public bool power { get; set; }
+        public Action<bool, int> Switch { get; set; }
         public ReferenceablePoint linePoint { get; set; }
         public List<Line> lines { get; set; }
+        public List<Connector> connectors { get; set; }
         public AND()
         {
 
             InitializeComponent();
+            connectors = new List<Connector>();
             Outputs = new List<Part>();
             Inputs = new List<Part>();
             lines = new List<Line>();
             offsetX = this.Width / 2;
-            offsetY =  this.Height / 2;
+            offsetY = this.Height / 2;
             Input1.lines = new List<Line>();
             Input2.lines = new List<Line>();
 
-           
+            Input1.parrent = this;
+            Input2.parrent = this;
+            Output.parrent = this;
 
             Input1.Switch = SwitchI1;
             Input2.Switch = SwitchI2;
@@ -58,9 +64,9 @@ namespace LogicSimulator
         public List<IParts> parts { get; set; }
         public List<Part> Outputs { get; set; }
         public List<Part> Inputs { get; set; }
-        Part Input2 = new Part(10,10);
-        Part Input1 = new Part(10,43);
-        Part Output = new Part(21,118);
+        Part Input2 = new Part(10, 10);
+        Part Input1 = new Part(10, 43);
+        Part Output = new Part(21, 118);
         public IParts input { get; set; }
 
         public event EventHandler InputClicked;
