@@ -3,3 +3,5 @@ It is my Maturita project.
 It is basic Logic gates simulator.  
 At the moment it is little bit of mess, and I will get the code together soon, but now I need to get basic functionality working.  
 Progress you can see also on: https://trello.com/b/ZlQ4tNS2/logic-simulator
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dIZSvRr4s5c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
